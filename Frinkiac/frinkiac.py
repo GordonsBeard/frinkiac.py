@@ -44,6 +44,10 @@ class Screencap(object):
 
         if caption is None:
             caption = self.caption
+        else:
+            if len(caption) > 300:
+                caption = caption[:300]
+            caption = self._chop_captions(caption)
 
         return '{0}/meme/{1}/{2}.jpg?b64lines={3}'.format(
             SITE_URL, 
@@ -55,8 +59,7 @@ class Screencap(object):
         cap_search = requests.get('{0}?e={1}&t={2}'.format(CAPTION_URL, self.episode, self.timestamp))
         data = cap_search.json()
         caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles']])
-        chopped_captions = textwrap.fill(caption, 25)
-        self.caption = chopped_captions
+        self.caption = self._chop_captions(caption)
         self.ep_title = data['Episode']['Title']
         self.season = data['Episode']['Season']
         self.ep_number = data['Episode']['EpisodeNumber']
@@ -64,6 +67,9 @@ class Screencap(object):
         self.writer = data['Episode']['Writer']
         self.org_air_date = data['Episode']['OriginalAirDate']
         self.wiki_link = data['Episode']['WikiLink']
+
+    def _chop_captions(self, caption):
+        return textwrap.fill(caption, 25)
 
 def search(query):
     """Returns a list of Screencap objects based on the string provided.

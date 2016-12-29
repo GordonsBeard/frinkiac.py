@@ -42,7 +42,7 @@ class Screencap(object):
         if self.caption is None:
             self._get_details()
 
-        if caption is None:
+        if caption is None or not caption.strip():
             caption = self.caption
         else:
             if len(caption) > 300:
@@ -83,6 +83,8 @@ def search(query):
     Once image_url() or meme_url() is hit then the Screencap object fills with:
     self.ep_title, .season, .ep_number, .director, .writer, .org_air_date, .wiki_link
     """
+    if len(query) > 200:
+        query = query[:200]
 
     try:
         gen_search = requests.get('https://frinkiac.com/api/search?q={0}'.format(query))

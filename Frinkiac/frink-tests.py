@@ -37,6 +37,11 @@ class Test_Frinkiac(unittest.TestCase):
         testSearch = frinkiac.search('asdf')
         self.assertEqual(len(testSearch), 0)
 
+    def test_Search_absurd_length(self):
+        # Test the Search to make sure it doesn't choke on massive strings
+        testSearch = frinkiac.search(absurd_length_caption)
+        self.assertEqual(len(testSearch), 36)
+
     def test_Search_meme_url(self):
         # Test the Search to see if it can bring back a captioned image
         testSearch = frinkiac.search('them fing')[0]
@@ -59,6 +64,11 @@ class Test_Frinkiac(unittest.TestCase):
         testSearch = frinkiac.search('them fing')[0]
         testSearch.image_url()
         self.assertEqual(valid_caption, testSearch.caption)
+
+    def test_Caption_no_caption(self):
+        # Make sure an empty caption reverts back to default caption
+        testSearch = frinkiac.search('them fing')[0]
+        self.assertEqual(valid_meme_url, testSearch.meme_url('   '))
 
 if __name__ == '__main__':
     unittest.main()

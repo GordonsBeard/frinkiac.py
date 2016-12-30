@@ -6,6 +6,7 @@ import textwrap
 SITE_URL = 'https://frinkiac.com'
 API_URL = '{0}/api/search'.format(SITE_URL)
 CAPTION_URL = '{0}/api/caption'.format(SITE_URL)
+RANDOM_URL = '{0}/api/random'.format(SITE_URL)
 
 class Screencap(object):
     def __init__(self, values):
@@ -97,3 +98,15 @@ def search(query):
         search_results.append(Screencap(result))
 
     return search_results
+
+def random():
+    """Returns a random screencap object"""
+
+    try:
+        random_search = requests.get(RANDOM_URL)
+    except requests.exceptions.ConnectionError:
+        return []
+
+    info = random_search.json()
+    random_Screen = {'Episode': info['Frame']['Episode'], 'Timestamp' : info['Frame']['Timestamp'], 'Id': info['Frame']['Id']}
+    return Screencap(random_Screen)

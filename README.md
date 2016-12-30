@@ -19,5 +19,7 @@ Once `image_url()` or `meme_url()` is hit then the Screencap object fills with t
     .ep_title, .season, .ep_number, .director, 
     .writer, .org_air_date, .wiki_link
 
+You can also get a random Screencap object by hitting `frinkiac.random()`
+
 ####Thanks:
 * [chanko](https://github.com/chanko/) for his [Frinkiac Ruby wrapper](https://github.com/chanko/frinkiac) I basically backward engineered.

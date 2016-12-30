@@ -59,7 +59,6 @@ class Screencap(object):
     def _get_details(self):
         cap_search = requests.get('{0}?e={1}&t={2}'.format(CAPTION_URL, self.episode, self.timestamp))
         data = cap_search.json()
-        print(data)
         caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles']])
         self.caption = self._chop_captions(caption)
         self.ep_title = data['Episode']['Title']

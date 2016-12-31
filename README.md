@@ -1,5 +1,5 @@
 # Frinkiac.py
-A Python wrapper for the undocumented [Frinkiac](http://frinkiac.com) search engine.
+A Python wrapper for the [Frinkiac](http://frinkiac.com) and [Morbotron](http://morbotron.com) search engines.
 
    
 ####Example:
@@ -20,6 +20,12 @@ Once `image_url()` or `meme_url()` is hit then the Screencap object fills with t
     .writer, .org_air_date, .wiki_link
 
 You can also get a random Screencap object by hitting `frinkiac.random()`
+
+####Morbotron:
+Just pass "False" along to the initial `.search()` or `.random()`
+
+    from Frinkiac import random
+	screenshot = random(False).meme_url()
 
 ####Thanks:
 * [chanko](https://github.com/chanko/) for his [Frinkiac Ruby wrapper](https://github.com/chanko/frinkiac) I basically backward engineered.

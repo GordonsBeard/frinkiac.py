@@ -3,22 +3,16 @@ import json
 import requests
 import textwrap
 
-FRINK_URL = 'https://frinkiac.com'
-FRINK_API_URL = '{0}/api/search'.format(FRINK_URL)
-FRINK_CAPTION_URL = '{0}/api/caption'.format(FRINK_URL)
-FRINK_RANDOM_URL = '{0}/api/random'.format(FRINK_URL)
-
-MORB_URL = 'https://morbotron.com'
-MORB_API_URL = '{0}/api/search'.format(MORB_URL)
-MORB_CAPTION_URL = '{0}/api/caption'.format(MORB_URL)
-MORB_RANDOM_URL = '{0}/api/random'.format(MORB_URL)
+SITE_URL = 'https://morbotron.com'
+API_URL = '{0}/api/search'.format(SITE_URL)
+CAPTION_URL = '{0}/api/caption'.format(SITE_URL)
+RANDOM_URL = '{0}/api/random'.format(SITE_URL)
 
 class Screencap(object):
-    def __init__(self, values, frink):
+    def __init__(self, values):
         self.episode = values['Episode']
         self.timestamp = values['Timestamp']
         self.id = values['Id']
-        self.frink = frink
 
     def __repr__(self):
         try:
@@ -30,8 +24,7 @@ class Screencap(object):
         finally:
             return 'ID: {0} {1}/{2}'.format(self.id, self.episode, self.timestamp)
 
-    def image_url(self):
-        SITE_URL = FRINK_URL if self.frink else MORB_URL
+    def image_url(self, index):
         try:
             ep = self.episode
             ts = self.timestamp
@@ -43,7 +36,6 @@ class Screencap(object):
             return '{0}/img/{1}/{2}.jpg'.format(SITE_URL, ep, ts)
 
     def meme_url(self, caption = None):
-        SITE_URL = FRINK_URL if self.frink else MORB_URL
         if caption is None or not caption.strip():
             try:
                 caption = self.caption
@@ -62,7 +54,6 @@ class Screencap(object):
             base64.urlsafe_b64encode(bytes(caption, 'utf-8')).decode('ascii'))
 
     def _get_details(self):
-        CAPTION_URL = FRINK_CAPTION_URL if self.frink else MORB_CAPTION_URL
         cap_search = requests.get('{0}?e={1}&t={2}'.format(CAPTION_URL, self.episode, self.timestamp))
         data = cap_search.json()
         caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles']])
@@ -78,27 +69,25 @@ class Screencap(object):
     def _chop_captions(self, caption):
         return textwrap.fill(caption, 25)
 
-def search(query, frink = True):
+def search(query):
     """Returns a list of Screencap objects based on the string provided."""
-    SITE_URL = FRINK_URL if frink else MORB_URL
     if len(query) > 200:
         query = query[:200]
 
     try:
-        gen_search = requests.get('{0}/api/search?q={1}'.format(SITE_URL, query))
+        gen_search = requests.get('https://morbotron.com/api/search?q={0}'.format(query))
     except requests.exceptions.ConnectionError:
         return []
 
     info = gen_search.json()
     search_results = []
     for result in info:
-        search_results.append(Screencap(result, frink))
+        search_results.append(Screencap(result))
 
     return search_results
 
-def random(frink = True):
+def random():
     """Returns a random screencap object"""
-    RANDOM_URL = FRINK_RANDOM_URL if frink else MORB_RANDOM_URL
 
     try:
         random_search = requests.get(RANDOM_URL)
@@ -107,5 +96,5 @@ def random(frink = True):
 
     info = random_search.json()
     random_screen = {'Episode': info['Frame']['Episode'], 'Timestamp' : info['Frame']['Timestamp'], 'Id': info['Frame']['Id']}
-    random_Screencap = Screencap(random_screen, frink)
+    random_Screencap = Screencap(random_screen)
     return random_Screencap

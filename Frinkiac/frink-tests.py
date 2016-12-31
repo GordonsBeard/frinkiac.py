@@ -1,5 +1,6 @@
 import unittest
 import frinkiac
+import requests
 
 # 'them fing', first value
 valid_init_dict = {'Episode': 'S13E16', 'Timestamp': 918584, 'Id': 1796916}
@@ -69,6 +70,11 @@ class Test_Frinkiac(unittest.TestCase):
         # Make sure an empty caption reverts back to default caption
         testSearch = frinkiac.search('them fing')[0]
         self.assertEqual(valid_meme_url, testSearch.meme_url('   '))
+
+    def test_Random(self):
+        # Make sure the random feature works, ensure the url resolves correctly
+        testRandom = frinkiac.random()
+        self.assertIsInstance(testRandom, frinkiac.Screencap)
 
 if __name__ == '__main__':
     unittest.main()

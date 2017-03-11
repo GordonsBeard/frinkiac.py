@@ -23,7 +23,7 @@ class Screencap(object):
     def __repr__(self):
         return '{1}/{2}'.format(self.id, self.episode, self.timestamp)
 
-    def image_url(self, caption = False):
+    def image_url(self, caption = ""):
         """Provides the image for a given episode/timestamp. Pass 'True' for caption"""
         SITE_URL = FRINK_URL if self.frink else MORB_URL
         try:
@@ -34,7 +34,7 @@ class Screencap(object):
             ep = self.ep_number
             ts = self.timestamp
         finally:
-            if caption:
+            if len(caption) > 0:
                 return self.meme_url(caption = caption)
             else:
                 return '{0}/img/{1}/{2}.jpg'.format(SITE_URL, ep, ts)

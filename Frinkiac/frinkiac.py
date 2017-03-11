@@ -21,16 +21,10 @@ class Screencap(object):
         self.frink = frink
 
     def __repr__(self):
-        try:
-            ep = self.episode
-            time = self.timestamp
-            title = self.ep_title
-        except AttributeError:
-            self._get_details()
-        finally:
-            return 'ID: {0} {1}/{2}'.format(self.id, self.episode, self.timestamp)
+        return '{1}/{2}'.format(self.id, self.episode, self.timestamp)
 
-    def image_url(self):
+    def image_url(self, caption = False):
+        """Provides the image for a given episode/timestamp. Pass 'True' for caption"""
         SITE_URL = FRINK_URL if self.frink else MORB_URL
         try:
             ep = self.episode
@@ -40,7 +34,10 @@ class Screencap(object):
             ep = self.ep_number
             ts = self.timestamp
         finally:
-            return '{0}/img/{1}/{2}.jpg'.format(SITE_URL, ep, ts)
+            if caption:
+                return self.meme_url(caption = caption)
+            else:
+                return '{0}/img/{1}/{2}.jpg'.format(SITE_URL, ep, ts)
 
     def meme_url(self, caption = None):
         SITE_URL = FRINK_URL if self.frink else MORB_URL
@@ -65,7 +62,7 @@ class Screencap(object):
         CAPTION_URL = FRINK_CAPTION_URL if self.frink else MORB_CAPTION_URL
         cap_search = requests.get('{0}?e={1}&t={2}'.format(CAPTION_URL, self.episode, self.timestamp))
         data = cap_search.json()
-        caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles']])
+        caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles'][:1]])
         self.caption = self._chop_captions(caption)
         self.ep_title = data['Episode']['Title']
         self.season = data['Episode']['Season']

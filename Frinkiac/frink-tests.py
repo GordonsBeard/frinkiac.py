@@ -45,7 +45,7 @@ class Test_Frinkiac(unittest.TestCase):
                 self.fail("Was returned a non-Screencap object!")
         self.assertTrue(success)
 
-    def test_Seach_no_results(self):
+    def test_Search_no_results(self):
         # Test the Search in case of no results
         testSearch = frinkiac.search('asdf')
         self.assertEqual(len(testSearch), 0)

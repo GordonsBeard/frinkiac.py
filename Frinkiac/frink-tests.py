@@ -1,5 +1,5 @@
 import unittest
-import frinkiac
+from Frinkiac import frinkiac
 import requests
 
 # frinkiac values

@@ -19,6 +19,10 @@ class Screencap(object):
         self.timestamp = values['Timestamp']
         self.id = values['Id']
         self.frink = frink
+        if frink:
+            self.rich_url = '{0}/caption/{1}/{2}'.format(FRINK_URL, self.episode, self.timestamp)
+        else:
+            self.rich_url = '{0}/caption/{1}/{2}'.format(MORB_URL, self.episode, self.timestamp)
 
     def __repr__(self):
         return '{1}/{2}'.format(self.id, self.episode, self.timestamp)
@@ -62,8 +66,10 @@ class Screencap(object):
         CAPTION_URL = FRINK_CAPTION_URL if self.frink else MORB_CAPTION_URL
         cap_search = requests.get('{0}?e={1}&t={2}'.format(CAPTION_URL, self.episode, self.timestamp))
         data = cap_search.json()
-        caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles'][:1]])
-        self.caption = self._chop_captions(caption)
+
+        # This controls how many captions you get.
+        caption = " ".join([subtitle['Content'] for subtitle in data['Subtitles']])
+        self.caption = self._chop_captions(caption[:300])
         self.ep_title = data['Episode']['Title']
         self.season = data['Episode']['Season']
         self.ep_number = data['Episode']['EpisodeNumber']

@@ -6,16 +6,16 @@ import requests
 # 'them fing', first value
 valid_frink_init_dict = {'Episode': 'S13E16', 'Timestamp': 918584, 'Id': 1796916}
 valid_frink_image_url = 'https://frinkiac.com/img/S13E16/918584.jpg'
-valid_frink_meme_url = 'https://frinkiac.com/meme/S13E16/918584.jpg?b64lines=VGhleSBjYWxsIHRoZW0gZmluZ2VycywKYnV0IEkgbmV2ZXIgc2VlICdlbSBmaW5nLgpPaCwgdGhlcmUgdGhleSBnby4='
-valid_frink_caption = 'They call them fingers,\nbut I never see \'em fing.\nOh, there they go.'
+valid_frink_meme_url = 'https://frinkiac.com/meme/S13E16/918584.jpg?b64lines=VGhleSBjYWxsIHRoZW0gZmluZ2VycywKYnV0IEkgbmV2ZXIgc2VlICdlbSBmaW5nLg=='
+valid_frink_caption = "They call them fingers,\nbut I never see 'em fing."
 hello_world_frink_caption_url = 'https://frinkiac.com/meme/S13E16/918584.jpg?b64lines=SGVsbG8gV29ybGQh'
 absurd_length_frink_caption_url = 'https://frinkiac.com/meme/S13E16/918584.jpg?b64lines=SXQgd2FzIHRoZSBiZXN0IG9mIHRpbWVzLAppdCB3YXMgdGhlIHdvcnN0IG9mCnRpbWVzLCBpdCB3YXMgdGhlIGFnZSBvZgp3aXNkb20sIGl0IHdhcyB0aGUgYWdlIG9mCmZvb2xpc2huZXNzLCBpdCB3YXMgdGhlCmVwb2NoIG9mIGJlbGllZiwgaXQgd2FzCnRoZSBlcG9jaCBvZiBpbmNyZWR1bGl0eSwKaXQgd2FzIHRoZSBzZWFzb24gb2YKTGlnaHQsIGl0IHdhcyB0aGUgc2Vhc29uCm9mIERhcmtuZXNzLCBpdCB3YXMgdGhlCnNwcmluZyBvZiBob3BlLCBpdCB3YXMKdGhlIHdpbnRlciBvZiBkZXNwYWlyLCB3ZQpoYWQgZXZlcnl0'
 
 # morbotron values
 valid_morb_init_dict = {'Episode': 'S09E03', 'Timestamp': 58725, 'Id': 2283957}
 valid_morb_image_url = 'https://morbotron.com/img/S09E03/58725.jpg'
-valid_morb_meme_url = 'https://morbotron.com/meme/S09E03/58725.jpg?b64lines=SGVsbG8uIEknbSBoZXJlIGZvciB0aGUKZnJlZSBiZWVyLiBZb3UgZ290IGl0LgpSaWdodCBhZnRlciB0aGVzZSA4MDAKcGVvcGxlIGdldCBpdC4='
-valid_morb_caption = 'Hello. I\'m here for the\nfree beer. You got it.\nRight after these 800\npeople get it.'
+valid_morb_meme_url = 'https://morbotron.com/meme/S09E03/58725.jpg?b64lines=SGVsbG8uIEknbSBoZXJlIGZvciB0aGUKZnJlZSBiZWVyLg=='
+valid_morb_caption = 'Hello. I\'m here for the\nfree beer.'
 hello_world_morb_caption_url = 'https://morbotron.com/meme/S09E03/58725.jpg?b64lines=SGVsbG8gV29ybGQh'
 absurd_length_morb_caption_url = 'https://morbotron.com/meme/S09E03/58725.jpg?b64lines=SXQgd2FzIHRoZSBiZXN0IG9mIHRpbWVzLAppdCB3YXMgdGhlIHdvcnN0IG9mCnRpbWVzLCBpdCB3YXMgdGhlIGFnZSBvZgp3aXNkb20sIGl0IHdhcyB0aGUgYWdlIG9mCmZvb2xpc2huZXNzLCBpdCB3YXMgdGhlCmVwb2NoIG9mIGJlbGllZiwgaXQgd2FzCnRoZSBlcG9jaCBvZiBpbmNyZWR1bGl0eSwKaXQgd2FzIHRoZSBzZWFzb24gb2YKTGlnaHQsIGl0IHdhcyB0aGUgc2Vhc29uCm9mIERhcmtuZXNzLCBpdCB3YXMgdGhlCnNwcmluZyBvZiBob3BlLCBpdCB3YXMKdGhlIHdpbnRlciBvZiBkZXNwYWlyLCB3ZQpoYWQgZXZlcnl0'
 
@@ -45,7 +45,7 @@ class Test_Frinkiac(unittest.TestCase):
                 self.fail("Was returned a non-Screencap object!")
         self.assertTrue(success)
 
-    def test_Seach_no_results(self):
+    def test_Search_no_results(self):
         # Test the Search in case of no results
         testSearch = frinkiac.search('asdf')
         self.assertEqual(len(testSearch), 0)
